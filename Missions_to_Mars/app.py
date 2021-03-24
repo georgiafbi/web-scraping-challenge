@@ -13,9 +13,9 @@ mongo = PyMongo(app, uri="mongodb://localhost:27017/mars_db")
 def home():
     # Find one record of data from the mongo database
     mars_data = mongo.db.mars_collection.find_one()
-    
+    print(mars_data)
     # Return template and data
-    return render_template("index.html", planet=mars_data)
+    return render_template("index.html", planet=mars_data,hemisphere=mars_data['hemisphere_image_urls'],featured_imgs=mars_data['featured_img_url'])
 
 @app.route("/scrape")   
 def scrape():
@@ -27,7 +27,7 @@ def scrape():
     # mongo.db.mars_collection.insert_one(mars_data)
 
     # Redirect back to home page
-    return redirect("/")
+    return redirect("/", code=302)
 
 
 

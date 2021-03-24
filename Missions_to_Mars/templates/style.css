@@ -1,0 +1,10 @@
+img{
+    border:2px solid #fff;
+    padding:20px;
+    margin-top: auto;
+    box-shadow: 10px 10px 5px #ccc;
+    -moz-border-radius:25px;
+    -webkit-border-radius:25px;
+    border-radius:25px;
+
+}
