@@ -46,7 +46,7 @@
         <figure>
           <figcaption style="text-align:center;font-weight: bold;padding: 3px;font-size:x-large;">{{featured.ftitle}}
 
-            <a href={{featured.fimg_url}}>
+            <a href={{featured.fimg_url}} target="_blank">
               <img class="img-responsive" src="{{featured.fimg_url}}" alt="Featured Mars Image"
                 style="box-shadow: 10px 10px 5px #ccc;border-radius:25px;"></a>
 
@@ -62,7 +62,7 @@
       {%for hemi in hemisphere%}
       <div class='col-md-6'>
         <figure>
-          <a href="{{hemi.img_url}}"><img class="img-responsive"
+          <a href="{{hemi.img_url}}" target="_blank"><img class="img-responsive"
               style="box-shadow: 10px 10px 5px #ccc;border-radius:25px;" src="{{hemi.img_url}}"
               alt="{{hemi.title}}"></a>
           <figcaption style="text-align:center;font-weight: bold;padding: 3px;font-size: medium;">{{hemi.title}}
