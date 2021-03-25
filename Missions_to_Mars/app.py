@@ -27,7 +27,7 @@ def scrape():
     # mongo.db.mars_collection.insert_one(mars_data)
 
     # Redirect back to home page
-    return redirect("/", code=302)
+    return redirect("/")
 
 
 

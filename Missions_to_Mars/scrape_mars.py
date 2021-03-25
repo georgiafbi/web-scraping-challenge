@@ -21,7 +21,7 @@ def scrape_info():
     #definition returns html soup
     def soup(u1="", u2=""):
         browser.visit(u1+u2)
-        browser.driver.maximize_window()
+        
         time.sleep(2)
         html=browser.html
         return BeautifulSoup(html,'html.parser')
@@ -55,7 +55,7 @@ def scrape_info():
 
 
     mars_image_url = 'https://www.jpl.nasa.gov/images?search=&category=Mars'
-    browser.driver.maximize_window()
+    
     browser.visit(mars_image_url)
     time.sleep(2)
     xpath = '/html/body/div/div/div/header/div[1]/div[3]/div/nav/div[1]/div[4]/button'
@@ -89,7 +89,7 @@ def scrape_info():
     base_url='https://www.jpl.nasa.gov'
     mars_url = '/images?search=&category=Mars'
     #ensures window opens to its maximum size
-    browser.driver.maximize_window()
+    
     #visits first web page
     browser.visit(base_url+mars_url)
     #gives time for the browser to load
