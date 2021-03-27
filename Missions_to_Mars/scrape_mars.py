@@ -22,7 +22,7 @@ def scrape_info():
     def soup(u1="", u2=""):
         browser.visit(u1+u2)
         
-        time.sleep(2)
+        time.sleep(3)
         html=browser.html
         return BeautifulSoup(html,'html.parser')
     # URL of page to be scraped
