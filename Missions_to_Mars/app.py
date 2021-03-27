@@ -22,9 +22,9 @@ def scrape():
     # Run the scrape function
     mars_data = scrape_mars.scrape_info()
     # Update the Mongo database using update and upsert=True
-    mongo.db.mars_collection.drop()
-    mongo.db.mars_collection.insert_one(mars_data)
-    # mongo.db.mars_collection.update({}, mars_data, upsert=True)
+    #mongo.db.mars_collection.drop()
+    #mongo.db.mars_collection.insert_one(mars_data)
+    mongo.db.mars_collection.update({}, mars_data, upsert=True)
     # #insert a python dictionary returned by function scrape() as a collection
     # mongo.db.mars_collection.insert_one(mars_data)
 

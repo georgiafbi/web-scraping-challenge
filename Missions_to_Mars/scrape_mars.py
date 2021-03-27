@@ -13,24 +13,25 @@ import pymongo
 conn = 'mongodb://localhost:27017'
 client = pymongo.MongoClient(conn)
 
+
 def scrape_info():
     # Setup splinter
     executable_path = {'executable_path': ChromeDriverManager().install()}
     browser = Browser('chrome', **executable_path, headless=False)
     browser.driver.maximize_window()
-    #definition returns html soup
+    # definition returns html soup
+
     def soup(u1="", u2=""):
         browser.visit(u1+u2)
-        
+
         time.sleep(3)
-        html=browser.html
-        return BeautifulSoup(html,'html.parser')
+        html = browser.html
+        return BeautifulSoup(html, 'html.parser')
     # URL of page to be scraped
     url = "https://mars.nasa.gov/news/"
 
-
     # Create BeautifulSoup object; parse with 'html.parser'
-    text_soup=soup(url)
+    text_soup = soup(url)
     results = text_soup.find_all('li', class_='slide')
 
     # Loop through returned results
@@ -53,9 +54,8 @@ def scrape_info():
         except AttributeError as e:
             print(e)
 
-
     mars_image_url = 'https://www.jpl.nasa.gov/images?search=&category=Mars'
-    
+
     browser.visit(mars_image_url)
     time.sleep(2)
     xpath = '/html/body/div/div/div/header/div[1]/div[3]/div/nav/div[1]/div[4]/button'
@@ -72,12 +72,12 @@ def scrape_info():
     supercam_img_id = supercam_img_soup.find('div', id='82498')
 
     supercam_img_url = supercam_img_id.find('img')["srcset"].split()[-2]
-    supercam_text=supercam_img_soup.find('h1',class_='text-h2').text
+    supercam_text = supercam_img_soup.find('h1', class_='text-h2').text
     print(supercam_text)
     print(supercam_img_url)
     time.sleep(2)
 
-### JPL Mars Space Images - Featured Image
+# JPL Mars Space Images - Featured Image
 
 # * Visit the url for JPL Featured Space Image [here](2 ).
 
@@ -86,43 +86,45 @@ def scrape_info():
 # * Make sure to find the image url to the full size `.jpg` image.
 
 # * Make sure to save a complete url string for this image.
-    base_url='https://www.jpl.nasa.gov'
+    base_url = 'https://www.jpl.nasa.gov'
     mars_url = '/images?search=&category=Mars'
-    #ensures window opens to its maximum size
-    
-    #visits first web page
+    # ensures window opens to its maximum size
+
+    # visits first web page
     browser.visit(base_url+mars_url)
-    #gives time for the browser to load
+    # gives time for the browser to load
     time.sleep(2)
 
-    #checks the Mars topic
+    # checks the Mars topic
     browser.find_by_css("input[id=filter_Mars]").first.click()
     time.sleep(2)
 
-    #gets the html code of the page
-    html2=browser.html
+    # gets the html code of the page
+    html2 = browser.html
     time.sleep(2)
-    #turns the html into beautiful soup
-    mars_topic_soup=BeautifulSoup(html2,'html.parser')
+    # turns the html into beautiful soup
+    mars_topic_soup = BeautifulSoup(html2, 'html.parser')
 
-    #returns a list of mars topic images on this visited webpage
-    search_listing_page_results=mars_topic_soup.find_all('div',class_="SearchResultCard")[0]
-    #concatenates base_url with image url
-    first_mars_topic_img_url=base_url+search_listing_page_results.a['href']
-    #gets title
-    first_mars_topic_img_title=search_listing_page_results.h2.text
+    # returns a list of mars topic images on this visited webpage
+    search_listing_page_results = mars_topic_soup.find_all(
+        'div', class_="SearchResultCard")[0]
+    # concatenates base_url with image url
+    first_mars_topic_img_url = base_url+search_listing_page_results.a['href']
+    # gets title
+    first_mars_topic_img_title = search_listing_page_results.h2.text
     print(first_mars_topic_img_url)
     print(first_mars_topic_img_title)
 
-    #visits the nasa page with the high resolution URL
+    # visits the nasa page with the high resolution URL
     browser.visit(first_mars_topic_img_url)
     time.sleep(2)
-    #get the html code for that high resolution url page
-    html3=browser.html
-    #turns that html code into some beautiful soup
-    high_res_soup=BeautifulSoup(html3,'html.parser')
-    #concatenates base_url with high resolution link
-    featured_img_url=high_res_soup.find_all('img',class_='BaseImage')[0]['srcset'].split()[-2]
+    # get the html code for that high resolution url page
+    html3 = browser.html
+    # turns that html code into some beautiful soup
+    high_res_soup = BeautifulSoup(html3, 'html.parser')
+    # concatenates base_url with high resolution link
+    featured_img_url = high_res_soup.find_all('img', class_='BaseImage')[
+        0]['srcset'].split()[-2]
 
     # Visit the Mars Facts webpage [here](https://space-facts.com/mars/)
     # and use Pandas to scrape the table containing facts about the planet including Diameter, Mass, etc.
@@ -155,20 +157,20 @@ def scrape_info():
     for link in mars_image_soup:
         full_img_link = link.find('a')['href']
         title = link.h3.text.replace(' Enhanced', '')
-        
-        hemi_soup=soup(usgs_url,full_img_link)
+
+        hemi_soup = soup(usgs_url, full_img_link)
 
         wide_image_url = hemi_soup.find('img', class_='wide-image')['src']
         img_url = usgs_url+wide_image_url
         hemisphere_image_urls.append({"title": title, "img_url": img_url})
         print(img_url)
-    
-    featured_img_url=[{"ftitle": first_mars_topic_img_title, "fimg_url": featured_img_url},{"ftitle": supercam_text, "fimg_url": supercam_img_url}]
+
+    featured_img_url = [{"ftitle": first_mars_topic_img_title, "fimg_url": featured_img_url}, {
+        "ftitle": supercam_text, "fimg_url": supercam_img_url}]
     mars_dict = {'news_title': mars_news_collection[0]['news_title'], 'news_p': mars_news_collection[0]['news_p'],
                  'featured_img_url': featured_img_url, 'mars_facts': html_table_string, 'hemisphere_image_urls': hemisphere_image_urls
                  }
-    
+
     browser.quit()
 
     return mars_dict
-
